@@ -5,6 +5,7 @@ import { SampleKernel } from './notebook/controller';
 import { DatabaseProvider } from './tree-view';
 import { establishConnection } from './db-conn';
 import { SampleContentSerializer } from './notebook/serializer';
+import { AddConnectionPanel } from "./panels/AddConnectionPanel";
 
 const cats = {
 	'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
@@ -87,10 +88,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "vscode-sql" is now active!');
 
 
-	let addConnectionCommand =  vscode.commands.registerCommand('vscode-sql.addConnection', () => {
-		vscode.window.showInformationMessage('add connection');
-	});
-	context.subscriptions.push(addConnectionCommand);
+	context.subscriptions.push(vscode.commands.registerCommand('vscode-sql.addConnection', () => {
+		AddConnectionPanel.render(context.extensionUri);
+	}));
 
 	// create tree view with DatabaseProvider as data provider
 
@@ -140,6 +140,7 @@ function getWebviewContent(cat: keyof typeof cats, webviewUri: vscode.Uri) {
   
   	<img src="${cats[cat]}" width="300" />
 	  <vscode-button id="howdy">Howdy!</vscode-button>
+	  <vscode-text-field>Text Field Label</vscode-text-field>
 	  <script type="module" src="${webviewUri}"></script>
   </body>
   </html>`;

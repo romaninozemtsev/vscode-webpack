@@ -61,6 +61,20 @@ const webviewConfig = {
 };
 
 
+const addConnectionWebviewConfig = {
+  ...baseConfig,
+  target: ["web", "es2020"],
+  entry: "./src/webview/add-connection.ts",
+  experiments: { outputModule: true },
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "add-connection.js",
+    libraryTarget: "module",
+    chunkFormat: "module",
+  },
+};
 
 
-module.exports = [ extensionConfig, webviewConfig ];
+
+
+module.exports = [ extensionConfig, webviewConfig, addConnectionWebviewConfig ];

@@ -1,0 +1,19 @@
+vscode-text-field {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+vscode-button {
+    margin-left: 10px;
+    width: 100px;
+}
