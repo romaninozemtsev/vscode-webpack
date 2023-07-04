@@ -39,6 +39,16 @@
         "title": "Show ANOTHER webview"
       }
     ],
+    "configuration": {
+      "title": "VsCode webpack",
+      "properties": {
+        "vscode-webpack.connections": {
+          "type": "array",
+          "default": [],
+          "description": "list of connections"
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {

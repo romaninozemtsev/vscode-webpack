@@ -7,10 +7,6 @@ import { establishConnection } from './db-conn';
 import { SampleContentSerializer } from './notebook/serializer';
 import { AddConnectionPanel } from "./panels/AddConnectionPanel";
 
-const cats = {
-	'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
-	'Compiling Cat': 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif'
-};
 
 const NOTEBOOK_TYPE = 'sql-notebook';
 
@@ -24,72 +20,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vscode-webpack" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let webviewDisposable = vscode.commands.registerCommand('vscode-webpack.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		const panel = vscode.window.createWebviewPanel(
-			'catCoding',
-			'Cat Coding',
-			vscode.ViewColumn.One,
-			{
-			  // Enable scripts in the webview
-			  enableScripts: true,
-			  localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, "dist")],
-			}
-		  );
-
-		  let scriptUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, "dist", "webview.js"));
-		
-	
-		  let iteration = 0;
-		  const updateWebview = () => {
-			const cat = iteration++ % 2 ? 'Compiling Cat' : 'Coding Cat';
-			panel.title = cat;
-			panel.webview.html = getWebviewContent(cat, scriptUri);
-		  };
-	
-		  // Set initial content
-		  updateWebview();
-	
-		  // And schedule updates to the content every second
-		  const interval = setInterval(updateWebview, 1000);
-
-			panel.onDidDispose(
-				() => {
-				// When the panel is closed, cancel any future updates to the webview content
-				clearInterval(interval);
-				},
-				null,
-				context.subscriptions
-			);
-
-			panel.webview.onDidReceiveMessage(
-				message => {
-				  switch (message.command) {
-					case 'alert':
-					  vscode.window.showErrorMessage(message.text);
-					  return;
-				  }
-				},
-				undefined,
-				context.subscriptions
-			  );
-	});
-
-	context.subscriptions.push(webviewDisposable);
-
-
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-sql" is now active!');
+	async function onConnectionAdded(connection: any) {
+		console.log('connection added', connection);
+		//vscode.confi
+	}
 
 
 	context.subscriptions.push(vscode.commands.registerCommand('vscode-sql.addConnection', () => {
-		AddConnectionPanel.render(context.extensionUri);
+		AddConnectionPanel.render(context.extensionUri, onConnectionAdded);
 	}));
 
 	// create tree view with DatabaseProvider as data provider
@@ -128,23 +66,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 }
 
-function getWebviewContent(cat: keyof typeof cats, webviewUri: vscode.Uri) {
-	return `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-	  <meta charset="UTF-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  <title>Cat Coding</title>
-  </head>
-  <body>
-  
-  	<img src="${cats[cat]}" width="300" />
-	  <vscode-button id="howdy">Howdy!</vscode-button>
-	  <vscode-text-field>Text Field Label</vscode-text-field>
-	  <script type="module" src="${webviewUri}"></script>
-  </body>
-  </html>`;
-  }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}

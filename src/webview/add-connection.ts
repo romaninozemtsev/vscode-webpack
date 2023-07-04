@@ -1,4 +1,5 @@
 import { provideVSCodeDesignSystem, vsCodeButton, vsCodeTextField, Button, TextField } from "@vscode/webview-ui-toolkit";
+import {ConnectionConfiguration} from "../models/ConnectionConfiguration";
 
 // In order to use the Webview UI Toolkit web components they
 // must be registered with the browser (i.e. webview) using the
@@ -45,15 +46,18 @@ function addConnectionClick() {
   const passwordInput = document.getElementById("password") as TextField;
   const databaseInput = document.getElementById("database") as TextField;
 
+  const connectionConfiguration: ConnectionConfiguration = {
+    name: "test",
+    host: hostInput?.value,
+    port: portInput?.value,
+    user: userInput?.value,
+    password: passwordInput?.value,
+    database: databaseInput?.value,
+  };
+
   vscode.postMessage({
     command: "addConnectionSubmit",
-    data: {
-      host: hostInput?.value,
-      port: portInput?.value,
-      user: userInput?.value,
-      password: passwordInput?.value,
-      database: databaseInput?.value,
-    },
+    data: connectionConfiguration,
     text: "Hey there partner! 🤠",
   });
 }

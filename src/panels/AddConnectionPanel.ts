@@ -16,6 +16,7 @@ export class AddConnectionPanel {
   public static currentPanel: AddConnectionPanel | undefined;
   private readonly _panel: WebviewPanel;
   private _disposables: Disposable[] = [];
+  private _onConnectionAdded: any;
 
   /**
    * The AddConnectionPanel class private constructor (called only from the render method).
@@ -23,7 +24,7 @@ export class AddConnectionPanel {
    * @param panel A reference to the webview panel
    * @param extensionUri The URI of the directory containing the extension
    */
-  private constructor(panel: WebviewPanel, extensionUri: Uri) {
+  private constructor(panel: WebviewPanel, extensionUri: Uri, onConnectionAdded: any) {
     this._panel = panel;
 
     // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
@@ -35,6 +36,8 @@ export class AddConnectionPanel {
 
     // Set an event listener to listen for messages passed from the webview context
     this._setWebviewMessageListener(this._panel.webview);
+
+    this._onConnectionAdded = onConnectionAdded;
   }
 
   /**
@@ -43,7 +46,7 @@ export class AddConnectionPanel {
    *
    * @param extensionUri The URI of the directory containing the extension.
    */
-  public static render(extensionUri: Uri) {
+  public static render(extensionUri: Uri, onConnectionAdded: any) {
     if (AddConnectionPanel.currentPanel) {
       // If the webview panel already exists reveal it
       AddConnectionPanel.currentPanel._panel.reveal(ViewColumn.One);
@@ -68,7 +71,7 @@ export class AddConnectionPanel {
         }
       );
 
-      AddConnectionPanel.currentPanel = new AddConnectionPanel(panel, extensionUri);
+      AddConnectionPanel.currentPanel = new AddConnectionPanel(panel, extensionUri, onConnectionAdded);
     }
   }
 
@@ -153,6 +156,7 @@ export class AddConnectionPanel {
             // Code that should run in response to the hello message command
             window.showInformationMessage(text);
             console.log(data);
+            this._onConnectionAdded(data);
             return;
           // Add more switch case statements here as more webview message commands
           // are created within the webview context (i.e. inside src/webview/main.ts)
