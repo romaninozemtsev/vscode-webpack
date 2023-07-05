@@ -1,9 +1,12 @@
 import * as vscode from 'vscode';
 import * as mysql from 'mysql2/promise';
+import { ConnectionConfiguration } from './models/ConnectionConfiguration';
+import { establishConnection, establishConnectionWithConfig } from './db-conn';
 
 export class DatabaseProvider implements vscode.TreeDataProvider<BaseDatabaseItem> {
 
-    constructor(private connection: mysql.Connection) {
+    //mysql.Connection
+    constructor(private dbConfigs: Array<ConnectionConfiguration>) {
         
     }
 
@@ -19,15 +22,13 @@ export class DatabaseProvider implements vscode.TreeDataProvider<BaseDatabaseIte
     }
 
     private async getDatabases(): Promise<BaseDatabaseItem[]> {
-        // Code to fetch the list of databases and return DatabaseItem array
-        // return empty list for now
-        return Promise.resolve([
+        const dbItems = this.dbConfigs.map(config =>
             new ConnectionItem(
-                this.connection,
+                config,
                 'localhost', 
-                ''
-            )
-        ]);
+                '',
+            ));
+        return Promise.resolve(dbItems);
     }
 }
 
@@ -121,8 +122,10 @@ class DbItem extends BaseDatabaseItem {
 }
 
 class ConnectionItem extends BaseDatabaseItem {
+    private connection?: mysql.Connection;
     constructor(
-        private readonly connection: mysql.Connection,
+        //private readonly connection: mysql.Connection,
+        private readonly connectionConfig: ConnectionConfiguration,
         public readonly label: string,
         readonly description?: string,
     ) {
@@ -132,11 +135,14 @@ class ConnectionItem extends BaseDatabaseItem {
     }
 
     async getChildren(): Promise<BaseDatabaseItem[]> {
+        if (!this.connection) {
+            this.connection = await establishConnectionWithConfig(this.connectionConfig);
+        }
         const [rows] = await this.connection.query('SHOW DATABASES');
             if (Array.isArray(rows)) {
                 return rows.map((row: any) => {
                     return new DbItem(
-                        this.connection,
+                        this.connection!,
                         row.Database, 
                         ''
                     );

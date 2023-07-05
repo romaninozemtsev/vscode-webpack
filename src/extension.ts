@@ -6,6 +6,7 @@ import { DatabaseProvider } from './tree-view';
 import { establishConnection } from './db-conn';
 import { SampleContentSerializer } from './notebook/serializer';
 import { AddConnectionPanel } from "./panels/AddConnectionPanel";
+import { ConnectionConfiguration } from './models/ConnectionConfiguration';
 
 
 const NOTEBOOK_TYPE = 'sql-notebook';
@@ -14,15 +15,30 @@ const NOTEBOOK_TYPE = 'sql-notebook';
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
 
-	const connection = await establishConnection();
+	//const connection = await establishConnection();
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vscode-webpack" is now active!');
 
+
+	function getSettings() {
+		return vscode.workspace.getConfiguration('vscode-webpack');
+	}
+
+	function getDbConfigs(settings: vscode.WorkspaceConfiguration = getSettings()) {
+		const currentConfigurations = settings.get<Array<ConnectionConfiguration>>('connections') || [];
+		return currentConfigurations;
+	}
+
+
 	async function onConnectionAdded(connection: any) {
 		console.log('connection added', connection);
-		//vscode.confi
+		// save to "vscode-webpack.connections" setting
+		const settings = getSettings();
+		const currentConfigurations = getDbConfigs(settings);
+		settings.update("connections", [...currentConfigurations, connection], vscode.ConfigurationTarget.Global);
+		console.log('currentConfigurations', currentConfigurations);
 	}
 
 
@@ -33,7 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// create tree view with DatabaseProvider as data provider
 
 	let treeView =  vscode.window.createTreeView('databaseExplorer', {
-		treeDataProvider: new DatabaseProvider(connection)
+		treeDataProvider: new DatabaseProvider(getDbConfigs())
 	});
 
 	context.subscriptions.push(vscode.commands.registerCommand('vscode-sql.createSqlNotebook', async () => {
