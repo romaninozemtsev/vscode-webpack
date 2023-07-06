@@ -36,18 +36,28 @@ function main() {
   // to the element (i.e. the `as Button` syntax)
   const howdyButton = document.getElementById("addBtn") as Button;
   howdyButton?.addEventListener("click", addConnectionClick);
+
+  // const hostInput = document.getElementById("host") as TextField;
+  // const nameInput = document.getElementById("name") as TextField;
+  // const databaseInput = document.getElementById("database") as TextField;
+  
+  // function onValuesChange() {
+
+  // }
+
 }
 
 // Callback function that is executed when the howdy button is clicked
 function addConnectionClick() {
   const hostInput = document.getElementById("host") as TextField;
+  const nameInput = document.getElementById("name") as TextField;
   const portInput = document.getElementById("port") as TextField;
   const userInput = document.getElementById("user") as TextField;
   const passwordInput = document.getElementById("password") as TextField;
   const databaseInput = document.getElementById("database") as TextField;
 
   const connectionConfiguration: ConnectionConfiguration = {
-    name: "test",
+    name: nameInput?.value || `${databaseInput?.value}@${hostInput?.value}`,
     host: hostInput?.value,
     port: portInput?.value,
     user: userInput?.value,
@@ -57,7 +67,6 @@ function addConnectionClick() {
 
   vscode.postMessage({
     command: "addConnectionSubmit",
-    data: connectionConfiguration,
-    text: "Hey there partner! 🤠",
+    data: connectionConfiguration
   });
 }

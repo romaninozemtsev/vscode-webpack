@@ -123,6 +123,7 @@ export class AddConnectionPanel {
         <body>
           <h1>Add MySQL Connection</h1>
           <form id="add-connection-form" class="flex-col">
+            <vscode-text-field id="name">Name</vscode-text-field>
             <div class="flex-row">
               <vscode-text-field value="localhost" id="host">Host</vscode-text-field>
               <vscode-text-field value="3306" id="port">Port</vscode-text-field>
@@ -148,13 +149,12 @@ export class AddConnectionPanel {
     webview.onDidReceiveMessage(
       (message: any) => {
         const command = message.command;
-        const text = message.text;
         const data = message.data;
 
         switch (command) {
           case "addConnectionSubmit":
             // Code that should run in response to the hello message command
-            window.showInformationMessage(text);
+            window.showInformationMessage("Connection added");
             console.log(data);
             this._onConnectionAdded(data);
             return;

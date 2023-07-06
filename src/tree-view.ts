@@ -2,13 +2,21 @@ import * as vscode from 'vscode';
 import * as mysql from 'mysql2/promise';
 import { ConnectionConfiguration } from './models/ConnectionConfiguration';
 import { establishConnection, establishConnectionWithConfig } from './db-conn';
+import { getDbConfigs } from './utilities/dbSettings';
 
 export class DatabaseProvider implements vscode.TreeDataProvider<BaseDatabaseItem> {
-
+    private _onDidChangeTreeData: vscode.EventEmitter<BaseDatabaseItem | undefined | null | void> = new vscode.EventEmitter<BaseDatabaseItem | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<BaseDatabaseItem | undefined | null | void> = this._onDidChangeTreeData.event;
+ 
     //mysql.Connection
-    constructor(private dbConfigs: Array<ConnectionConfiguration>) {
+    constructor() {
         
     }
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
 
     getTreeItem(element: BaseDatabaseItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
         return element;
@@ -22,10 +30,10 @@ export class DatabaseProvider implements vscode.TreeDataProvider<BaseDatabaseIte
     }
 
     private async getDatabases(): Promise<BaseDatabaseItem[]> {
-        const dbItems = this.dbConfigs.map(config =>
+        const dbItems = getDbConfigs().map(config =>
             new ConnectionItem(
                 config,
-                'localhost', 
+                config.name || 'localhost',
                 '',
             ));
         return Promise.resolve(dbItems);

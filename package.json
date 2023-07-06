@@ -37,6 +37,11 @@
       {
         "command": "vscode-sql.anotherWebview",
         "title": "Show ANOTHER webview"
+      },
+      {
+        "command": "vscode-sql.refresh",
+        "title": "Refresh data list view",
+        "icon": "$(refresh)"
       }
     ],
     "configuration": {
@@ -72,6 +77,10 @@
       "view/title": [
         {
           "command": "vscode-sql.addConnection",
+          "when": "view == databaseExplorer",
+          "group": "navigation"
+        }, {
+          "command": "vscode-sql.refresh",
           "when": "view == databaseExplorer",
           "group": "navigation"
         }
