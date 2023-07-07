@@ -74,7 +74,20 @@ const addConnectionWebviewConfig = {
   },
 };
 
+const rendererWebviewConfig = {
+  ...baseConfig,
+  target: ["web", "es2020"],
+  entry: "./src/webview/table-renderer.ts",
+  experiments: { outputModule: true },
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "table-renderer.js",
+    libraryTarget: "module",
+    chunkFormat: "module",
+  },
+};
 
 
 
-module.exports = [ extensionConfig, webviewConfig, addConnectionWebviewConfig ];
+
+module.exports = [ extensionConfig, webviewConfig, addConnectionWebviewConfig, rendererWebviewConfig ];

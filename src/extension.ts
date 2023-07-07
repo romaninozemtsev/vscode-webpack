@@ -76,7 +76,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.registerNotebookSerializer(
 			NOTEBOOK_TYPE, new SampleContentSerializer(), { transientOutputs: true }
 		),
-		new SampleKernel()
+		new SampleKernel(),
+		new SampleKernel("sql-notebook2", "sql2 notebook bum")
 	);
 
 }

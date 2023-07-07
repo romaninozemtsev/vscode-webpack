@@ -79,7 +79,8 @@
           "command": "vscode-sql.addConnection",
           "when": "view == databaseExplorer",
           "group": "navigation"
-        }, {
+        },
+        {
           "command": "vscode-sql.refresh",
           "when": "view == databaseExplorer",
           "group": "navigation"
@@ -94,6 +95,16 @@
           {
             "filenamePattern": "*.sql-notebook"
           }
+        ]
+      }
+    ],
+    "notebookRenderer": [
+      {
+        "id": "sql-table-renderer",
+        "displayName": "SQL table renderer",
+        "entrypoint": "./dist/table-renderer.js",
+        "mimeTypes": [
+          "vscode-webpack.sql-notebook/table"
         ]
       }
     ]
@@ -126,6 +137,7 @@
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
+    "@types/vscode-notebook-renderer": "^1.72.0",
     "mysql2": "^3.4.3"
   }
 }
