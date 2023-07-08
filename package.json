@@ -138,6 +138,7 @@
   },
   "dependencies": {
     "@types/vscode-notebook-renderer": "^1.72.0",
-    "mysql2": "^3.4.3"
+    "mysql2": "^3.4.3",
+    "simple-datatables": "^7.2.0"
   }
 }

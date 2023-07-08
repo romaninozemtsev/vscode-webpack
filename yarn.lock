@@ -652,6 +652,11 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+dayjs@^1.11.7:
+  version "1.11.9"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
+  integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
+
 debug@4, debug@4.3.4, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
@@ -673,6 +678,11 @@ denque@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/denque/-/denque-2.1.0.tgz#e93e1a6569fb5e66f16a3c2a2964617d349d6ab1"
   integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
+
+diff-dom@5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/diff-dom/-/diff-dom-5.0.3.tgz#2a53ad83800156087b1632642858a7340b2220ca"
+  integrity sha512-/gOPP7yBrZpaVW96L4Iye6nmKcd884WwibSj66Vqo8vx5bMxXsAL0FOomTDhRsR1Mg9an0PPXWKYM8jxiYwcIQ==
 
 diff@5.0.0:
   version "5.0.0"
@@ -1746,6 +1756,14 @@ shebang-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
+
+simple-datatables@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/simple-datatables/-/simple-datatables-7.2.0.tgz#7f8cb0d5597ecbec4b33397d416b8f69b4e3f1f1"
+  integrity sha512-dpKQuHcsciLyZD4GqZKkTkNe3sDN2iJJsWjhoPpQk5OSW5kF9FS3hWa3ERGQ4VkrlTrEaOSuI8A6m3NjnVvtrA==
+  dependencies:
+    dayjs "^1.11.7"
+    diff-dom "5.0.3"
 
 slash@^3.0.0:
   version "3.0.0"

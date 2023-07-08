@@ -41,14 +41,14 @@ export class SampleKernel {
 
 		await connection.query('USE information_schema');
 		const query = cell.document.getText();
-        const [rows] = await connection.query(query);
+        const [rows, fields] = await connection.query(query);
 		try {
 
 			if (Array.isArray(rows)) {
-				vscode.NotebookCellOutputItem.json(rows);
+				//vscode.NotebookCellOutputItem.json({rows, fields});
 
 				execution.replaceOutput([new vscode.NotebookCellOutput([
-					vscode.NotebookCellOutputItem.json(rows, 'vscode-webpack.sql-notebook/table')
+					vscode.NotebookCellOutputItem.json({rows, fields}, 'vscode-webpack.sql-notebook/table')
 				])]);
 			}
 
