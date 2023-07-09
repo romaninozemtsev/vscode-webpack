@@ -1,7 +1,7 @@
 import type { ActivationFunction } from 'vscode-notebook-renderer';
 
 import {DataTable} from "simple-datatables";
-
+import 'simple-datatables/dist/css/style.css';
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
@@ -68,20 +68,29 @@ export const activate: ActivationFunction = context => ({
     //render(<TableRenderer data={data} />, element);
     //element.innerText = JSON.stringify(data.json());
     addTable(element, data);
-    console.log("data.json()", data.json());
+    const jsonData = data.json();
+    console.log("data.json()", jsonData);
+    const fields: any[] = jsonData.fields;
+    console.log("fields", fields);
+    const rows: any[] = jsonData.rows;
+    console.log("rows", rows);
+
+    const fieldNames: string[] = fields.map(field => field.name);
+    console.log("fieldNames", fieldNames);
+    const dataAsArrays = rows.map(row => {
+      return fieldNames.map(field => row[field]);
+    });
+
+    console.log("dataAsArrays", dataAsArrays);
+
+    
+//        "headings": fields,
+//"data": dataAsArrays
+
     new DataTable('#myTable', {
       data: {
-        "headings": ["Name", "Ext.", "City", "Start Date", "Completion"],
-        "data": [
-            [
-                "Unity Pugh",
-                9958, "Curicó", "2005/02/11", "37%"
-            ],
-            [
-                "Theodore Duran",
-                8971, "Dhanbad", "1999/04/07", "97%"
-            ],
-          ]
+        "headings": fieldNames,
+        "data": dataAsArrays
         }
     });
   }
