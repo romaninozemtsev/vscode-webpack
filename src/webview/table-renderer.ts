@@ -11,41 +11,35 @@ import 'simple-datatables/dist/css/style.css';
 //   return h('div', null, JSON.stringify(data.json()));
 // };
 
-// function renderTable(container: HTMLElement, value: any) {
-//   const table = document.createElement('table');
-// 	table.className = 'issues-list';
-// 	const headerRow = document.createElement('tr');
-// 	const tableHeaders = ['Issue', 'Description'];
+function renderTable(container: HTMLElement, fieldNames: string[], rows: string[][]): HTMLTableElement{
+  container.innerHTML = '';
+  const table: HTMLTableElement = document.createElement('table');
+  table.setAttribute('id', 'myTable');
+	const headerRow = document.createElement('tr');
 
-// 	tableHeaders.forEach(label => {
-// 		const header = document.createElement('th');
-// 		header.textContent = label;
-// 		headerRow.appendChild(header);
-// 	});
+	fieldNames.forEach(label => {
+		const header = document.createElement('th');
+		header.textContent = label;
+		headerRow.appendChild(header);
+	});
 
-// 	table.appendChild(headerRow);
+  table.appendChild(headerRow);
 
-// 	value.forEach(item => {
-// 		const row = document.createElement('tr');
+  rows.forEach(item => {
+    const row = document.createElement('tr');
+    item.forEach(value => {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
+    table.appendChild(row);
+  });
 
-// 		const title = document.createElement('td');
-// 		const link = document.createElement('a');
-// 		link.href = item.url;
-// 		link.textContent = item.title;
-// 		title.appendChild(link);
-// 		row.appendChild(title);
+  container.appendChild(table);
+  return table;
+}
 
-// 		const body = document.createElement('td');
-// 		body.textContent = item.body;
-// 		row.appendChild(body);
-
-// 		table.appendChild(row);
-// 	});
-
-// 	container.appendChild(table);
-// }
-
-function addTable(container: HTMLElement, value: any) {
+function addTable(container: HTMLElement) {
   // container.innerHTML = `<table class="table table-striped table-bordered" id="myTable">
   //   <thead>
   //     <tr>
@@ -60,38 +54,44 @@ function addTable(container: HTMLElement, value: any) {
   //     </tr>
   //     </tbody>
   // </table>`;
-  container.innerHTML = `<table class="table table-striped table-bordered" id="myTable"></table>`;
+  container.innerHTML = `<table class="table table-striped table-bordered" id="myTable">
+    <thead>
+      <tr>
+        <th>Issue</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+  </table>`;
 }
 
 export const activate: ActivationFunction = context => ({
   renderOutputItem(data, element) {
     //render(<TableRenderer data={data} />, element);
     //element.innerText = JSON.stringify(data.json());
-    addTable(element, data);
+    
     const jsonData = data.json();
-    console.log("data.json()", jsonData);
     const fields: any[] = jsonData.fields;
-    console.log("fields", fields);
     const rows: any[] = jsonData.rows;
-    console.log("rows", rows);
 
     const fieldNames: string[] = fields.map(field => field.name);
-    console.log("fieldNames", fieldNames);
     const dataAsArrays = rows.map(row => {
       return fieldNames.map(field => row[field]);
     });
+    // const tableElem: HTMLTableElement = renderTable(element, fieldNames, dataAsArrays);
+    element.innerHTML = '';
+    const tableElem: HTMLTableElement = document.createElement('table');
+    element.appendChild(tableElem);
 
-    console.log("dataAsArrays", dataAsArrays);
 
     
 //        "headings": fields,
 //"data": dataAsArrays
 
-    new DataTable('#myTable', {
-      data: {
-        "headings": fieldNames,
-        "data": dataAsArrays
-        }
-    });
+    const simpleTable = new DataTable(tableElem, {
+       data: {
+         "headings": fieldNames,
+         "data": dataAsArrays
+         }
+     });
   }
 });
