@@ -80,7 +80,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		new SampleKernel("sql-notebook2", "sql2 notebook bum")
 	);
 
-	let disposable = vscode.commands.registerCommand('vscode-sql.runSql', function () {
+	let runSqlCommand = vscode.commands.registerCommand('vscode-sql.runSql', function () {
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
             return; // No open text editor
@@ -94,6 +94,24 @@ export async function activate(context: vscode.ExtensionContext) {
         // run the selected text as SQL
         //runSql(text);
     });
+
+	context.subscriptions.push(runSqlCommand);
+
+	let disposable = vscode.commands.registerCommand('vscode-sql.chooseDatabase', () => {
+        const quickPick = vscode.window.createQuickPick();
+        quickPick.items = [
+			{ label: 'Database 1', description: 'This is Database 1' },
+		];
+        quickPick.onDidChangeSelection(([item]) => {
+            if (item) {
+                vscode.window.showInformationMessage(`Selected database: ${item.label}`);
+                // do something with the selection here
+            }
+        });
+        quickPick.show();
+    });
+
+    context.subscriptions.push(disposable);
 
 }
 

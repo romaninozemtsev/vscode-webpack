@@ -47,6 +47,11 @@
         "command": "vscode-sql.runSql",
         "title": "Run SQL",
         "icon": "$(play)"
+      },
+      {
+        "command": "vscode-sql.chooseDatabase",
+        "title": "Choose Database",
+        "icon": "$(play)"
       }
     ],
     "keybindings": [
