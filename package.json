@@ -42,6 +42,19 @@
         "command": "vscode-sql.refresh",
         "title": "Refresh data list view",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "vscode-sql.runSql",
+        "title": "Run SQL",
+        "icon": "$(play)"
+      }
+    ],
+    "keybindings": [
+      {
+          "command": "vscode-sql.runSql",
+          "key": "ctrl+shift+r",
+          "mac": "cmd+shift+r",
+          "when": "editorLangId == sql"
       }
     ],
     "configuration": {
@@ -85,7 +98,11 @@
           "when": "view == databaseExplorer",
           "group": "navigation"
         }
-      ]
+      ],
+      "editor/context": [{
+          "command": "vscode-sql.runSql",
+          "when": "editorLangId == sql"
+      }]
     },
     "notebooks": [
       {

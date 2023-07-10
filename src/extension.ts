@@ -80,6 +80,21 @@ export async function activate(context: vscode.ExtensionContext) {
 		new SampleKernel("sql-notebook2", "sql2 notebook bum")
 	);
 
+	let disposable = vscode.commands.registerCommand('vscode-sql.runSql', function () {
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+
+        let selection = editor.selection;
+        let text = editor.document.getText(selection);
+
+		vscode.window.showInformationMessage('Running SQL: ' + text);
+
+        // run the selected text as SQL
+        //runSql(text);
+    });
+
 }
 
 
